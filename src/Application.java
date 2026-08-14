@@ -3,6 +3,13 @@ import java.util.Scanner;
 public class Application {
 
 
+    // user to allocate entet  opinion of managing
+    static Scanner input = new Scanner(System.in);
+    // [kamal],[jagath],[puspa],[],[],[],[]
+    static String[] custmers = new String[10];  // save customer's  name
+
+    static int customerPointer = 0;
+
     public static void printPrimaryQ() {
 
 
@@ -17,6 +24,7 @@ public class Application {
 
 
     }
+
 
     public static void printWelcomeNote() {
         System.out.println("=========================================================================");
@@ -35,12 +43,96 @@ public class Application {
     };
 
 
+    // ===========Customer Managment===========
+    public static void saveCustomer() {
+
+        for (String customer : custmers) {
+            System.out.print(customer + ", ");
+        }
+        System.out.println();
+
+        if (customerPointer >= custmers.length) {
+
+            System.out.println("oops, Cannot add more than customers! ");
+            return;
+        }
+
+
+        System.out.println("Pleasr Enter Customer (" + (customerPointer + 1) + ")" + "Name");
+        String name = input.nextLine();
+
+        if (custmers[0] != null) {
+            if (isCostomerExits(name)) {
+                System.out.println("Customer already exits!");
+                return;
+
+            }
+
+
+        }
+        custmers[customerPointer++] = name;
+        System.out.println("Customer saved sucess!");
+
+
+    }
+
+
+    public static boolean isCostomerExits(String name) {
+
+        for (int i = 0; i < customerPointer; i++) {
+
+            if (custmers[i].equalsIgnoreCase(name)) {
+                return true;
+
+
+            }
+
+
+        }
+
+        return false;
+
+
+    }
+
+    // ===========Customer Managment===========
+
+
     public static void manageCustomer() {
         System.out.println("Manage your Customers");
 
-        for (String customerQ : customerQ) {
+        // -----------print Q-----------------
 
-            System.out.println(customerQ);
+        while (true) {
+
+            for (String customerQ : customerQ) {
+
+                System.out.println(customerQ);
+
+            }
+            // -----------print Q-----------------
+
+            int num = input.nextInt();
+            input.nextLine();
+
+            switch (num) {
+
+                case 1:  // save customer
+                    saveCustomer();
+                    break;
+                case 2: // update customer
+                    break;
+                case 3: // search customer
+                    break;
+                case 4: // delete customer
+                    break;
+                case 5: // back to home
+                    break;
+                default:
+                    System.out.println("Idiot..Please Try Again..");
+                    return;
+            }
+
 
         }
 
@@ -66,9 +158,9 @@ public class Application {
             // print primary questions secondly
             printPrimaryQ();
 
-            // user to allocate entet  opinion of managing
-            Scanner input = new Scanner(System.in);
+
             int num = input.nextInt();
+            input.nextLine();
 
             switch (num) {
 
