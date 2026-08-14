@@ -95,6 +95,57 @@ public class Application {
 
     }
 
+    public static void clearNewLine() {
+
+        input.nextLine();
+    }
+
+    public static void updateCustomer() {
+        System.out.println("Please Enter Customer Id :");
+        int customerIndex = input.nextInt();
+        customerIndex--; // dont insert 0
+        clearNewLine();
+
+
+        String customerName = custmers[customerIndex];
+        if (customerName != null) {
+            System.out.println("Customer found and name is :" + customerName);
+            System.out.println("Insert New Customer name : ");
+            String tempName = input.nextLine();
+
+            custmers[customerIndex] = tempName;
+            System.out.println("Custmer Updated new name is " + tempName);
+        } else {
+
+            System.out.println("Customer not found!");
+        }
+
+
+    }
+
+
+    public static void deleteCustomer() {
+        System.out.println("Please Enter Customer Id :");
+        int customerIndex = input.nextInt();
+        customerIndex--; // dont insert 0
+
+        String tempName = custmers[customerIndex];
+        clearNewLine();
+
+        if (null != tempName) {
+
+            custmers[customerIndex] = null;
+            customerIndex--;
+            System.out.println("Customer Deleted : " + tempName);
+
+        } else {
+
+            System.out.println("Customer not found!");
+        }
+
+
+    }
+
     // ===========Customer Managment===========
 
 
@@ -113,7 +164,7 @@ public class Application {
             // -----------print Q-----------------
 
             int num = input.nextInt();
-            input.nextLine();
+            clearNewLine();
 
             switch (num) {
 
@@ -121,10 +172,12 @@ public class Application {
                     saveCustomer();
                     break;
                 case 2: // update customer
+                    updateCustomer();
                     break;
-                case 3: // search customer
+                case 3:  // delete customer
+                    deleteCustomer();
                     break;
-                case 4: // delete customer
+                case 4: // search customer
                     break;
                 case 5: // back to home
                     break;
@@ -160,7 +213,7 @@ public class Application {
 
 
             int num = input.nextInt();
-            input.nextLine();
+            clearNewLine();
 
             switch (num) {
 
