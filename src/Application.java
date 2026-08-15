@@ -383,7 +383,7 @@ public class Application {
 
     public static void searchProduct() {
 
-        System.out.println("Please insert SearchText: :");
+        System.out.println("Please insert SearchText:");
         String pName = input.nextLine();
         clearNewLine();
 
