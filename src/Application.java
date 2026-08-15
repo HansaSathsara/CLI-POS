@@ -106,7 +106,7 @@ public class Application {
         if (name != null) {
             for (int i = 0; i <= customerPointer; i++) {
 
-                if (custmers[i].equalsIgnoreCase(name)) {
+                if (custmers[i].contains(name)) {
                     return i;
 
 
@@ -265,7 +265,7 @@ public class Application {
         if (pname != null) {
             for (int i = 0; i <= productPointer; i++) {
 
-                if (products[i].equalsIgnoreCase(pname)) {
+                if (products[i].contains(pname)) {
                     return i;
 
                 }
