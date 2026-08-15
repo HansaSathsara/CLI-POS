@@ -383,15 +383,15 @@ public class Application {
 
     public static void searchProduct() {
 
-        System.out.println("Please insert product id :");
-        int index = input.nextInt();
+        System.out.println("Please insert SearchText: :");
+        String pName = input.nextLine();
         clearNewLine();
 
-        String pname = isProductExitsbyIndex(index);
+        int index = isProductExits(pName);
 
-        if (pname != null) {
+        if (index != -1) {
 
-            System.out.println("Product found and name is " + pname);
+            System.out.println("Product found and id is : " + index);
         } else {
 
             System.out.println("Product not found");
