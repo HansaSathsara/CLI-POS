@@ -18,11 +18,9 @@ public class Application {
 
     static int customerPointer = -1; // currently pointer to inserted new slot
     static int productPointer = -1;// currently pointer to inserted new slot
-    static int counterCustomer = 0; // show to user how many items currently fill
-    static int counterProduct = 0;
-    static int counteQuantity = 0;
-    static int counterPrice = 0;
-    static int counterOrder = 0;
+    static int counterCustomer = 1; // show to user how many items currently fill
+    static int counterProduct = 1;
+    static int counterOrder = -1;
 
     public static void printPrimaryQ() {
 
@@ -60,9 +58,8 @@ public class Application {
             "1)Place Order",
             "2)View All Order",
             "3)Cancel Order",
-            "4)Find Order",
-            "5)Back",
-            "6)Exit",
+            "4)Back",
+            "5)Exit",
             "Choose an Option : "
 
 
@@ -73,12 +70,18 @@ public class Application {
 
     }
 
+
+    public static boolean orderIsEmpty() {
+        return counterOrder == -1;
+
+    }
+
     public static boolean productIsEmpty() {
         return productPointer == -1;
     }
 
     public static boolean customerisFull() {
-        return custmers.length == customerPointer;
+        return custmers.length - 1 == customerPointer;
     }
 
     public static boolean productIsFull() {
@@ -98,7 +101,7 @@ public class Application {
         }
 
 
-        System.out.println("Pleasr Enter Customer (" + (customerPointer + 1) + ")" + "Name");
+        System.out.println("Pleasr Enter Customer (" + (counterCustomer++) + ")" + "Name");
         String name = input.nextLine();
 
         if (custmers[0] != null) {
@@ -278,8 +281,9 @@ public class Application {
                     searchCustomer();
                     break;
                 case 5: // back to home
-                    System.out.println("Good Bye!");
                     return;
+                case 6:
+                    goodBye();
                 default:
                     System.out.println("Idiot..Please Try Again..");
                     return;
@@ -334,7 +338,7 @@ public class Application {
 
         loadAllProduct();
 
-        System.out.println("please Enter product ( " + (++counterProduct) + " )" + "name :");
+        System.out.println("please Enter product ( " + (counterProduct++) + " )" + "name :");
         String pName = input.nextLine();
 
         System.out.println("Enter product Price (LKR) :");
@@ -364,11 +368,11 @@ public class Application {
 
             }
 
-
+            ++productPointer;
             products[productPointer] = pName;
             productsPrices[productPointer] = price;
             productStockes[productPointer] = qty;
-            ++productPointer;
+
             System.out.println("product saved " + pName);
 
 
@@ -383,7 +387,7 @@ public class Application {
         } else {
 
             System.out.println("Please insert Product Id: ");
-            int index = input.nextInt();
+            int index = input.nextInt() - 1;
             clearNewLine();
 
             String name = products[index];
@@ -410,7 +414,7 @@ public class Application {
     public static void deleteProduct() {
 
         System.out.println("Please Enter Product Id: ");
-        int index = input.nextInt();
+        int index = input.nextInt() - 1;
         clearNewLine();
 
         if (isProductExitsbyIndex(index) != null) {
@@ -476,11 +480,13 @@ public class Application {
                     searchProduct();
                     break;
                 case 5: // back
-                    System.out.println("Good bye!");
                     return;
                 case 6: // exit
+                    goodBye();
+                    break;
+                default:
                     System.out.println("Idiot..Try Again..");
-                    return;
+
             }
 
 
@@ -510,7 +516,7 @@ public class Application {
         // pick product
         loadAllProduct();
         System.out.println("Please Enter Product id: ");
-        int pid = input.nextInt();
+        int pid = input.nextInt() - 1;
         clearNewLine();
 
         if (pid < 0 || pid > productPointer || products[pid] == null) {
@@ -532,18 +538,56 @@ public class Application {
         }
         if (qty > productStockes[pid]) {
 
-            System.out.println("Not enough stocK available :" + productStockes[qty]);
+            System.out.println("Not enough stocK available :" + productStockes[pid]);
             return;
         }
 
         double total = productsPrices[pid] * qty;
         productStockes[pid] -= qty;
 
-        String orderSummery = String.format("Order#%d | Customer:%s | Product%s | Qty%d | Total:LKR%.2f ", counterOrder + 1, index, pid, qty, total);
+        String orderSummery = String.format("Order# %d | Customer: %s | Product: %s | Qty: %d | Total: LKR %.2f ", (counterOrder + 1 + 1), custmers[index], products[pid], qty, total);
 
-        orders[counterOrder] = orderSummery;
-        counteQuantity++;
-        System.out.println("Order Placed!");
+        orders[++counterOrder] = orderSummery;
+        System.out.println("Order Placed! " + orderSummery);
+    }
+
+
+    public static void viewOrder() {
+
+        if (orderIsEmpty()) {
+            System.out.println("Not yet Order placed!");
+            return;
+        }
+        for (int i = 0; i <= counterOrder; i++) {
+
+            System.out.println(orders[i]);
+
+        }
+    }
+
+    public static void cancelOrder() {
+
+        if (orderIsEmpty()) {
+            System.out.println("Not yet Order placed!");
+            return;
+        }
+
+        System.out.println("Please Enter order id");
+        int index = input.nextInt();
+
+        String order = orders[index];
+
+        if (order != null) {
+
+            System.out.println("Order Found and name is :" + order);
+            orders[index] = null;
+            System.out.println("Order Cancelled!");
+            counterOrder--;
+        } else {
+
+            System.out.println("Order not found!");
+        }
+
     }
 
     // =======================Order managment =======================
@@ -556,26 +600,47 @@ public class Application {
     public static void manageOrder() {
         System.out.println("Manage your Orders");
 
-        for (String order : orderQ) {
-            System.out.println(order);
+        while (true) {
+
+            for (String order : orderQ) {
+                System.out.println(order);
+            }
+            System.out.println();
+
+            int num = input.nextInt();
+            clearNewLine();
+
+
+            switch (num) {
+
+                case 1:
+                    placeOrder();
+                    break;
+                case 2: // viewOrder
+                    viewOrder();
+                    break;
+                case 3: // cancelOrder
+                    cancelOrder();
+                    break;
+                case 4: // back
+                    return;
+                case 5:
+                    goodBye();
+                    break;
+                default: // exit
+                    System.out.println("Idiot..Try Again..");
+            }
+
+
         }
-        System.out.println();
-
-        int num = input.nextInt();
-        clearNewLine();
 
 
-        switch (num) {
+    }
 
-            case 1:
-                placeOrder();
-            case 2: // viewOrder
-            case 3: // cancelOrder
-            case 4: // findOrder
-            case 5: // back
-            case 6: // exit
-        }
+    public static void goodBye() {
 
+        System.out.println("Good bye..");
+        System.exit(0);
 
     }
 
