@@ -558,10 +558,21 @@ public class Application {
             System.out.println("Not yet Order placed!");
             return;
         }
+
+        boolean any = false;
+
         for (int i = 0; i <= counterOrder; i++) {
 
-            System.out.println(orders[i]);
+            if (orders[i] != null) {
+                System.out.println(orders[i]);
+                any = true;
+            }
 
+
+        }
+
+        if (!any) {
+            System.out.println("Not yet Order placed!");
         }
     }
 
@@ -577,16 +588,15 @@ public class Application {
 
         String order = orders[index];
 
-        if (order != null) {
-
-            System.out.println("Order Found and name is :" + order);
-            orders[index] = null;
-            System.out.println("Order Cancelled!");
-            counterOrder--;
-        } else {
-
+        if (index < 0 || counterOrder < index || order == null) {
             System.out.println("Order not found!");
+            return;
         }
+
+        System.out.println("Order Found and name is :" + order);
+        orders[index] = null;
+        System.out.println("Order Cancelled!");
+
 
     }
 
